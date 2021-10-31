@@ -1,3 +1,4 @@
+import { Button, Icon } from "@ui-kitten/components";
 import * as React from "react";
 import { StyleSheet } from "react-native";
 
@@ -11,6 +12,9 @@ export default function TabOneScreen({
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tab One</Text>
+      <Button accessoryLeft={<Icon name="checkmark-circle-2-outline" />}>
+        Someting ok.
+      </Button>
       <View
         style={styles.separator}
         lightColor="#eee"
