@@ -5,10 +5,11 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import Theme from "./constants/Theme";
-import useCachedResources from "./hooks/useCachedResources";
-import useColorScheme from "./hooks/useColorScheme";
-import Navigation from "./navigation";
+import Theme from "./src/constants/Theme";
+import { StateProvider } from "./src/firebase/state";
+import useCachedResources from "./src/hooks/useCachedResources";
+import useColorScheme from "./src/hooks/useColorScheme";
+import Navigation from "./src/navigation";
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -22,8 +23,10 @@ export default function App() {
         <IconRegistry icons={EvaIconsPack} />
         <ApplicationProvider {...eva} theme={{ ...eva.light, ...Theme }}>
           <SafeAreaProvider>
-            <Navigation colorScheme={colorScheme} />
-            <StatusBar />
+            <StateProvider>
+              <Navigation colorScheme={colorScheme} />
+              <StatusBar />
+            </StateProvider>
           </SafeAreaProvider>
         </ApplicationProvider>
       </>
