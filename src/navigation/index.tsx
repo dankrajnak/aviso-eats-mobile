@@ -22,9 +22,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import useFirebaseState from "../hooks/useFirebaseState";
 import NotFoundScreen from "../screens/NotFoundScreen";
+import RestaurantsScreen from "../screens/RestaurantsScreen";
 import SignInScreen from "../screens/SignInScreen";
 import TabOneScreen from "../screens/TabOneScreen";
-import TabTwoScreen from "../screens/TabTwoScreen";
 import { RootStackParamList, RootTabParamList } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 
@@ -88,33 +88,23 @@ const BottomTabBar: React.FC<BottomTabBarProps> = ({ navigation, state }) => (
     onSelect={(index) => navigation.navigate(state.routeNames[index])}
   >
     <BottomNavigationTab title="Tab One" />
-    <BottomNavigationTab title="Tab Two" />
+    <BottomNavigationTab title="Restaurants" />
   </BottomNavigation>
 );
 
 function BottomTabNavigator() {
   return (
-    <Layout style={styles.container} level="1">
+    <Layout style={styles.container} level="4">
       <SafeAreaView style={styles.container}>
         <BottomTab.Navigator
           initialRouteName="TabOne"
           tabBar={BottomTabBar}
           screenOptions={{
             headerShown: false,
-            header: () => (
-              <>
-                <TopNavigation
-                  alignment="center"
-                  title="Aviso Eats"
-                  subtitle="Choosin'the Foodin'"
-                />
-                <Divider />
-              </>
-            ),
           }}
         >
           <BottomTab.Screen name="TabOne" component={TabOneScreen} />
-          <BottomTab.Screen name="TabTwo" component={TabTwoScreen} />
+          <BottomTab.Screen name="Restaurants" component={RestaurantsScreen} />
         </BottomTab.Navigator>
       </SafeAreaView>
     </Layout>

@@ -24,7 +24,13 @@ export default function App() {
     return (
       <>
         <IconRegistry icons={EvaIconsPack} />
-        <ApplicationProvider {...eva} theme={{ ...eva.light, ...Theme }}>
+        <ApplicationProvider
+          {...eva}
+          theme={{
+            ...(colorScheme === "light" ? eva.light : eva.dark),
+            ...Theme,
+          }}
+        >
           <SafeAreaProvider initialMetrics={initialWindowMetrics}>
             <StateProvider>
               <Navigation colorScheme={colorScheme} />
