@@ -3,30 +3,29 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome } from "@expo/vector-icons";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
-  NavigationContainer,
-  DefaultTheme,
-  DarkTheme,
-} from "@react-navigation/native";
+  BottomTabBarProps,
+  createBottomTabNavigator,
+} from "@react-navigation/bottom-tabs";
+import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import {
+  BottomNavigation,
+  BottomNavigationTab,
+  Divider,
+  Layout,
+  TopNavigation,
+} from "@ui-kitten/components";
 import * as React from "react";
-import { ColorSchemeName, Pressable } from "react-native";
+import { ColorSchemeName, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import Colors from "../constants/Colors";
-import useColorScheme from "../hooks/useColorScheme";
 import useFirebaseState from "../hooks/useFirebaseState";
-import ModalScreen from "../screens/ModalScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
 import SignInScreen from "../screens/SignInScreen";
 import TabOneScreen from "../screens/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
-import {
-  RootStackParamList,
-  RootTabParamList,
-  RootTabScreenProps,
-} from "../types";
+import { RootStackParamList, RootTabParamList } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 
 // Routes
@@ -55,7 +54,7 @@ const RootNavigator = () => {
   const { me } = useFirebaseState();
   return (
     <Stack.Navigator>
-      {me ? (
+      {true ? (
         <Stack.Screen
           name="Root"
           component={BottomTabNavigator}
@@ -73,9 +72,6 @@ const RootNavigator = () => {
         component={NotFoundScreen}
         options={{ title: "Oops!" }}
       />
-      <Stack.Group screenOptions={{ presentation: "modal" }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
-      </Stack.Group>
     </Stack.Navigator>
   );
 };
@@ -86,57 +82,47 @@ const RootNavigator = () => {
  */
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
-function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
+const BottomTabBar: React.FC<BottomTabBarProps> = ({ navigation, state }) => (
+  <BottomNavigation
+    selectedIndex={state.index}
+    onSelect={(index) => navigation.navigate(state.routeNames[index])}
+  >
+    <BottomNavigationTab title="Tab One" />
+    <BottomNavigationTab title="Tab Two" />
+  </BottomNavigation>
+);
 
+function BottomTabNavigator() {
   return (
-    <BottomTab.Navigator
-      initialRouteName="TabOne"
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
-      }}
-    >
-      <BottomTab.Screen
-        name="TabOne"
-        component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<"TabOne">) => ({
-          title: "Tab One",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate("Modal")}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}
-            >
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          ),
-        })}
-      />
-      <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
-        options={{
-          title: "Tab Two",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
-    </BottomTab.Navigator>
+    <Layout style={styles.container} level="1">
+      <SafeAreaView style={styles.container}>
+        <BottomTab.Navigator
+          initialRouteName="TabOne"
+          tabBar={BottomTabBar}
+          screenOptions={{
+            headerShown: false,
+            header: () => (
+              <>
+                <TopNavigation
+                  alignment="center"
+                  title="Aviso Eats"
+                  subtitle="Choosin'the Foodin'"
+                />
+                <Divider />
+              </>
+            ),
+          }}
+        >
+          <BottomTab.Screen name="TabOne" component={TabOneScreen} />
+          <BottomTab.Screen name="TabTwo" component={TabTwoScreen} />
+        </BottomTab.Navigator>
+      </SafeAreaView>
+    </Layout>
   );
 }
 
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>["name"];
-  color: string;
-}) {
-  return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
-}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
