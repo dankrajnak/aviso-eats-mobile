@@ -12,13 +12,10 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
   BottomNavigation,
   BottomNavigationTab,
-  Divider,
   Layout,
-  TopNavigation,
 } from "@ui-kitten/components";
 import * as React from "react";
-import { ColorSchemeName, StyleSheet } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { ColorSchemeName, StyleSheet, View, SafeAreaView } from "react-native";
 
 import useFirebaseState from "../hooks/useFirebaseState";
 import NotFoundScreen from "../screens/NotFoundScreen";
@@ -94,25 +91,36 @@ const BottomTabBar: React.FC<BottomTabBarProps> = ({ navigation, state }) => (
 
 function BottomTabNavigator() {
   return (
-    <Layout style={styles.container} level="4">
-      <SafeAreaView style={styles.container}>
-        <BottomTab.Navigator
-          initialRouteName="TabOne"
-          tabBar={BottomTabBar}
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          <BottomTab.Screen name="TabOne" component={TabOneScreen} />
-          <BottomTab.Screen name="Restaurants" component={RestaurantsScreen} />
-        </BottomTab.Navigator>
-      </SafeAreaView>
-    </Layout>
+    <>
+      <Layout level="4">
+        <SafeAreaView style={{ flex: 0 }}></SafeAreaView>
+      </Layout>
+      <Layout level="1" style={{ flex: 1, height: "100%" }}>
+        <SafeAreaView style={{ flex: 1 }}>
+          <View style={{ flex: 1 }}>
+            <BottomTab.Navigator
+              initialRouteName="TabOne"
+              tabBar={BottomTabBar}
+              screenOptions={{
+                headerShown: false,
+              }}
+            >
+              <BottomTab.Screen name="TabOne" component={TabOneScreen} />
+              <BottomTab.Screen
+                name="Restaurants"
+                component={RestaurantsScreen}
+              />
+            </BottomTab.Navigator>
+          </View>
+        </SafeAreaView>
+      </Layout>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "blue",
   },
 });

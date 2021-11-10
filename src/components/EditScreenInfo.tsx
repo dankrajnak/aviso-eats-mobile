@@ -1,8 +1,7 @@
+import { Text } from "@ui-kitten/components";
 import * as WebBrowser from "expo-web-browser";
 import React from "react";
-import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
-
-import Colors from "../constants/Colors";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 export default function EditScreenInfo({ path }: { path: string }) {
   return (
